@@ -46,5 +46,9 @@ class Player extends PositionComponent {
   }
 
   @override
-  void render(Canvas canvas) {}
+  void render(Canvas canvas) {
+    super.render(canvas);
+
+    canvas.drawRect(squarePos, squarePaint);
+  }
 }
