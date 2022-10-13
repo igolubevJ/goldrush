@@ -18,6 +18,16 @@ void main() async {
 
 class GoldRush with Game {
 
+  static const int squareSpeed = 250;
+  static final squarePaint = BasicPalette.green.paint();
+  static const  squareWidth = 100.0;
+  static const squareHeight = 100.0;
+
+  late Rect squarePos;
+
+  int squareDirection = 1;
+  late double screenWidth, screenHeight, centerX, centerY;
+
   @override
   Future<void> onLoad() async {
     // TODO: implement render
