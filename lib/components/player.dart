@@ -4,4 +4,10 @@ import 'package:flame/geometry.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 
-class Player {}
+class Player extends PositionComponent {
+  @override
+  void update(double dt) {}
+
+  @override
+  void render(Canvas canvas) {}
+}
