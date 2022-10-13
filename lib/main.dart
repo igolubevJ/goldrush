@@ -49,7 +49,9 @@ class GoldRush with Game {
 
   @override
   void render(Canvas canvas) {
-    // TODO: implement render
+    // Function for control what is drawn on the screen
+
+    canvas.drawRect(squarePos, squarePaint); // draw the green screen
   }
 
   @override
