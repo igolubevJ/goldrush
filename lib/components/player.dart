@@ -10,6 +10,7 @@ class Player extends PositionComponent {
   // The direction our square is travelling in, 1 for left to right, -1 for
   // right to left
   int squareDirection = 1;
+  late double screenWidth, screenHeight, centerX, centerY;
 
 
   @override
@@ -19,6 +20,12 @@ class Player extends PositionComponent {
     // Update the x position of the square based on the speed and direction
     // and the time elapsed
     position.x += squareSpeed * squareDirection * dt;
+
+    if (squareDirection == 1 && position.x > screenWidth) {
+      squareDirection = -1;
+    } else if (squareDirection == -1 && position.x < 0) {
+      squareDirection = 1;
+    }
   }
 
   @override
