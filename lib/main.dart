@@ -30,7 +30,21 @@ class GoldRush with Game {
 
   @override
   Future<void> onLoad() async {
-    // TODO: implement render
+    // initialize game and load game resources
+    super.onLoad();
+
+    // Get the width and height of out canvas
+    screenWidth = MediaQueryData.fromWindow(window).size.width;
+    screenHeight = MediaQueryData.fromWindow(window).size.height;
+
+    // Calculate the center of the screen, allowing for the adjustment
+    // for the square size
+    centerX = (screenWidth / 2) - (squareWidth / 2);
+    centerY = (screenHeight / 2) - (squareHeight / 2);
+
+    // Set the initial position of the green square at the center of the screen
+    // with a size of 100 width and height
+    squarePos = Rect.fromLTWH(centerX, centerY, squareWidth, squareHeight);
   }
 
   @override
