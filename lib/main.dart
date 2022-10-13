@@ -3,6 +3,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
+import 'package:goldrush/components/player.dart';
 
 void main() async {
   final goldrush = GoldRush();
@@ -17,5 +18,10 @@ void main() async {
 }
 
 class GoldRush extends FlameGame {
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
 
+    add(Player());
+  }
 }
