@@ -17,6 +17,18 @@ class Player extends PositionComponent {
   int squareDirection = 1;
   late double screenWidth, screenHeight, centerX, centerY;
 
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
+
+    screenWidth = MediaQueryData.fromWindow(window).size.width;
+    screenHeight = MediaQueryData.fromWindow(window).size.height;
+
+    centerX = (screenWidth / 2) - (squareWidth / 2);
+    centerY = (screenHeight / 2) - (squareHeight / 2);
+
+    squarePos = Rect.fromLTWH(centerX, centerY, squareWidth, squareHeight);
+  }
 
   @override
   void update(double dt) {
