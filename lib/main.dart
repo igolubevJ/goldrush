@@ -17,7 +17,7 @@ void main() async {
   );
 }
 
-class GoldRush extends FlameGame {
+class GoldRush extends FlameGame with HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     super.onLoad();
