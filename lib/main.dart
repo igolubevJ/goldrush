@@ -1,18 +1,36 @@
+import 'dart:ui';
+import 'package:flame/flame.dart';
+import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flame/game.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  final goldrush = GoldRush();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  WidgetsFlutterBinding.ensureInitialized();
+  await Flame.device.fullScreen();
+  await Flame.device.setPortrait();
+
+  runApp(
+    GameWidget<GoldRush>(game: goldrush),
+  );
+}
+
+class GoldRush with Game {
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Container(),
-    );
+  Future<void> onLoad() async {
+    // TODO: implement render
   }
+
+  @override
+  void render(Canvas canvas) {
+    // TODO: implement render
+  }
+
+  @override
+  void update(double dt) {
+    // TODO: implement update
+  }
+
 }
