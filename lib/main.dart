@@ -56,7 +56,20 @@ class GoldRush with Game {
 
   @override
   void update(double dt) {
-    // TODO: implement update
+    // This function to update the game state since the time elapsed since
+    // the last update
+
+    // Update the x position of the square bases on the speed and direction
+    // and the time elapsed
+    squarePos = squarePos.translate(squareSpeed * squareDirection * dt, 0);
+
+    // If the square reaches side of the screen reverse the direction the
+    // square is travelling in
+    if (squareDirection == 1 && squarePos.right > screenWidth) {
+      squareDirection = -1;
+    } else if (squareDirection == -1 && squarePos.left < 0) {
+      squareDirection = 1;
+    }
   }
 
 }
