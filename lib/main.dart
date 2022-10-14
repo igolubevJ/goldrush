@@ -38,21 +38,31 @@ class GoldRush extends FlameGame
 
     add(Background(george));
     final tiledMap = await TiledComponent.load('tiles.tmx', Vector2.all(32));
-    add(tiledMap);
 
+    add(tiledMap);
     add(george);
 
-    add(Zombie(
-        position: Vector2(100, 200), size: Vector2(32.0, 64.0), speed: 20.0));
+    final enemies = tiledMap.tileMap.getObjectGroupFromLayer('Enemies');
 
-    add(Zombie(
-        position: Vector2(300, 200), size: Vector2(32.0, 64.0), speed: 20.0));
-
-    add(Skeleton(
-        position: Vector2(100, 600), size: Vector2(32.0, 64.0), speed: 60.0));
-
-    add(Skeleton(
-        position: Vector2(300, 600), size: Vector2(32.0, 64.0), speed: 60.0));
+    enemies.objects.asMap().forEach((index, position) {
+      if (index % 2 == 0) {
+        add(
+          Skeleton(
+            position: Vector2(position.x, position.y),
+            size: Vector2(32.0, 64.0),
+            speed: 60.0,
+          ),
+        );
+      } else {
+        add(
+          Zombie(
+            position: Vector2(position.x, position.y),
+            size: Vector2(32.0, 64.0),
+            speed: 20.0,
+          ),
+        );
+      }
+    });
 
     add(ScreenCollidable());
     add(hud);
