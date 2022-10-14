@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame/geometry.dart';
 
 class Water extends PositionComponent with HasHitboxes, Collidable {
   Water({
@@ -8,4 +9,11 @@ class Water extends PositionComponent with HasHitboxes, Collidable {
   }) : super(position: position, size: size);
 
   int id;
+
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
+    collidableType = CollidableType.passive;
+    addHitbox(HitboxRectangle());
+  }
 }
