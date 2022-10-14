@@ -1,9 +1,7 @@
-import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:goldrush/components/george.dart';
-import 'components/player.dart';
 
 void main() async {
   // Create an instance of the game
