@@ -14,20 +14,17 @@ void main() async {
   await Flame.device.fullScreen();
   await Flame.device.setPortrait();
 
-
   // Run the app, passing the games widget here
-  runApp(
-      GameWidget(game: goldRush)
-  );
+  runApp(GameWidget(game: goldRush));
 }
 
 class GoldRush extends FlameGame with HasCollidables {
-
   @override
   Future<void> onLoad() async {
     super.onLoad();
     add(Background());
-    add(George());
+    add(George(
+        position: Vector2(200, 400), size: Vector2(48.0, 48.0), speed: 40.0));
     add(ScreenCollidable());
   }
 }
