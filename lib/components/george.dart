@@ -3,16 +3,19 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/sprite.dart';
 import 'package:goldrush/components/character.dart';
+import 'package:goldrush/components/hud/hud.dart';
 import 'package:goldrush/components/skeleton.dart';
 import 'package:goldrush/components/zombie.dart';
 
 class George extends Character {
   George({
+    required this.hud,
     required Vector2 position,
     required Vector2 size,
     required double speed,
   }) : super(position: position, size: size, speed: speed);
 
+  final HudComponent hud;
   late double walkingSpeed, runningSpeed;
 
   @override
@@ -54,5 +57,12 @@ class George extends Character {
     playing = false;
 
     addHitbox(HitboxRectangle());
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    speed = hud.runButton.buttonPressed ? runningSpeed : walkingSpeed;
   }
 }

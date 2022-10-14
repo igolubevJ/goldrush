@@ -21,16 +21,20 @@ void main() async {
   runApp(GameWidget(game: goldRush));
 }
 
-class GoldRush extends FlameGame with HasCollidables, HasDraggables, HasTappables {
+class GoldRush extends FlameGame
+    with HasCollidables, HasDraggables, HasTappables {
   @override
   Future<void> onLoad() async {
     super.onLoad();
     add(Background());
 
-    add(HudComponent());
+    HudComponent hud = HudComponent();
 
     add(George(
-        position: Vector2(200, 400), size: Vector2(48.0, 48.0), speed: 40.0));
+        hud: hud,
+        position: Vector2(200, 400),
+        size: Vector2(48.0, 48.0),
+        speed: 40.0));
 
     add(Zombie(
         position: Vector2(100, 200), size: Vector2(32.0, 64.0), speed: 20.0));
