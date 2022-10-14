@@ -110,7 +110,8 @@ class George extends Character {
     speed = hud.runButton.buttonPressed ? runningSpeed : walkingSpeed;
 
     if (!hud.joystick.delta.isZero()) {
-      position.add(hud.joystick.relativeDelta * speed * dt);
+      // position.add(hud.joystick.relativeDelta * speed * dt);
+      movePlayer(dt);
       playing = true;
 
       switch (hud.joystick.direction) {
@@ -140,7 +141,8 @@ class George extends Character {
       }
     } else {
       if (movingToTouchedLocation) {
-        position += (targetLocation - position).normalized() * (speed * dt);
+        // position += (targetLocation - position).normalized() * (speed * dt);
+        movePlayer(dt);
 
         double threshold = 1.0;
 
@@ -174,6 +176,31 @@ class George extends Character {
       } else {
         if (playing) {
           stopAnimations();
+        }
+      }
+    }
+  }
+
+  void movePlayer(double delta) {
+    if (!(hasCollided && collisionDirection == currentDirection)) {
+      if (movingToTouchedLocation) {
+        position.add(
+            (targetLocation - position).normalized() * (speed * delta),
+        );
+      } else {
+        switch(currentDirection) {
+          case Character.left:
+            position.add(Vector2(delta * -speed, 0));
+            break;
+          case Character.right:
+            position.add(Vector2(delta * -speed, 0));
+            break;
+          case Character.up:
+            position.add(Vector2(0, delta * -speed));
+            break;
+          case Character.down:
+            position.add(Vector2(0, delta * speed));
+            break;
         }
       }
     }
