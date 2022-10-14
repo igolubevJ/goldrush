@@ -1,11 +1,13 @@
 import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
+import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:goldrush/components/character.dart';
 import 'package:goldrush/components/hud/hud.dart';
 import 'package:goldrush/components/skeleton.dart';
 import 'package:goldrush/components/zombie.dart';
+import 'package:goldrush/utils/math_utils.dart';
 
 class George extends Character {
   George({
@@ -17,6 +19,14 @@ class George extends Character {
 
   final HudComponent hud;
   late double walkingSpeed, runningSpeed;
+
+  late Vector2 targetLocation;
+  bool movingToTouchedLocation = false;
+
+  void moveToLocation(TapUpInfo info) {
+    targetLocation = info.eventPosition.game;
+    movingToTouchedLocation = true;
+  }
 
   @override
   void onCollision(Set<Vector2> points, Collidable other) {
@@ -48,14 +58,15 @@ class George extends Character {
     leftAnimation =
         spriteSheet.createAnimationByColumn(column: 1, stepTime: 0.2);
 
-    upAnimation =
-        spriteSheet.createAnimationByColumn(column: 2, stepTime: 0.2);
+    upAnimation = spriteSheet.createAnimationByColumn(column: 2, stepTime: 0.2);
 
     rightAnimation =
         spriteSheet.createAnimationByColumn(column: 3, stepTime: 0.2);
 
     animation = downAnimation;
     playing = false;
+
+    anchor = Anchor.center;
 
     addHitbox(HitboxRectangle());
   }
@@ -75,7 +86,7 @@ class George extends Character {
       position.add(hud.joystick.relativeDelta * speed * dt);
       playing = true;
 
-      switch(hud.joystick.direction) {
+      switch (hud.joystick.direction) {
         case JoystickDirection.up:
         case JoystickDirection.upRight:
         case JoystickDirection.upLeft:
@@ -101,8 +112,42 @@ class George extends Character {
           break;
       }
     } else {
-      if (playing) {
-        stopAnimations();
+      if (movingToTouchedLocation) {
+        position += (targetLocation - position).normalized() * (speed * dt);
+
+        double threshold = 1.0;
+
+        var difference = targetLocation - position;
+        if (difference.x.abs() < threshold && difference.y.abs() < threshold) {
+          stopAnimations();
+          movingToTouchedLocation = false;
+          return;
+        }
+
+        playing = true;
+
+        var angle = getAngel(position, targetLocation);
+        if ((angle > 315 && angle < 360) || (angle > 0 && angle < 45)) {
+          // Moving right
+          animation = rightAnimation;
+          currentDirection = Character.right;
+        } else if (angle > 45 && angle < 135) {
+          // Moving down
+          animation = downAnimation;
+          currentDirection = Character.down;
+        } else if (angle > 135 && angle < 225) {
+          // Moving left
+          animation = leftAnimation;
+          currentDirection = Character.left;
+        } else if (angle > 255 && angle < 315) {
+          // Moving up
+          animation = upAnimation;
+          currentDirection = Character.up;
+        }
+      } else {
+        if (playing) {
+          stopAnimations();
+        }
       }
     }
   }

@@ -1,13 +1,24 @@
 import 'dart:ui';
-import 'package:flame/flame.dart';
+import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:goldrush/components/george.dart';
 
-class Background extends PositionComponent {
+class Background extends PositionComponent with Tappable {
   static final backgroundPaint = BasicPalette.white.paint();
 
+  Background(this.george);
+
+  final George george;
   late double screenWidth, screenHeight;
+
+
+  @override
+  bool onTapUp(TapUpInfo info) {
+    george.moveToLocation(info);
+    return true;
+  }
 
   @override
   Future<void> onLoad() async {
