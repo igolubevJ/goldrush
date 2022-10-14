@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
@@ -27,5 +28,6 @@ class GoldRush extends FlameGame with HasCollidables {
     super.onLoad();
     add(Background());
     add(George());
+    add(ScreenCollidable());
   }
 }
