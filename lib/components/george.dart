@@ -27,9 +27,20 @@ extension CreateAnimationByColumn on SpriteSheet {
 }
 
 class George extends SpriteAnimationComponent {
+  static const int down = 0, left = 1, up = 2, right = 3;
+
   late double screenWidth, screenHeight, centerX, centerY;
   late double georgeSizeWidth = 48.0;
   late double georgeSizeHeight = 48.0;
+
+  late SpriteAnimation georgeDownAnimation,
+      georgeLeftAnimation,
+      georgeRightAnimation,
+      georgeUpAnimation;
+
+  double elapsedTime = 0.0;
+  double georgeSpeed = 40.0;
+  int currentDirection = down;
 
   @override
   Future<void> onLoad() async {
