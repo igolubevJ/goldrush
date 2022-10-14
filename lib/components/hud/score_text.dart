@@ -28,4 +28,9 @@ class ScoreText extends HudMarginComponent {
     );
     add(TextComponent());
   }
+
+  setScore(int score) {
+    this.score += score;
+    scoreTextComponent.text = scoreText + this.score.toString();
+  }
 }
