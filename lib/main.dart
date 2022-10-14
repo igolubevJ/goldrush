@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:goldrush/components/background.dart';
+import 'package:goldrush/components/coin.dart';
 import 'package:goldrush/components/george.dart';
 import 'package:goldrush/components/hud/hud.dart';
 import 'package:goldrush/components/skeleton.dart';
@@ -63,6 +66,20 @@ class GoldRush extends FlameGame
         );
       }
     });
+
+    Random random = Random(DateTime.now().millisecondsSinceEpoch);
+    for (int i = 0; i < 50; i++) {
+      int randomX = random.nextInt(48) + 1;
+      int randomY = random.nextInt(48) + 1;
+
+      double posCoinX = (randomX * 32) + 5;
+      double posCoinY = (randomY * 32) + 5;
+
+      add(Coin(
+        position: Vector2(posCoinX, posCoinY),
+        size: Vector2(20, 20),
+      ));
+    }
 
     add(ScreenCollidable());
     add(hud);
