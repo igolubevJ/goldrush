@@ -60,7 +60,19 @@ class George extends SpriteAnimationComponent {
       srcSize: Vector2(georgeSizeWidth, georgeSizeHeight),
     );
 
-    animation = spriteSheet.createAnimationByColumn(column: 0, stepTime: 0.2);
+    georgeDownAnimation =
+        spriteSheet.createAnimationByColumn(column: 0, stepTime: 0.2);
+
+    georgeLeftAnimation =
+        spriteSheet.createAnimationByColumn(column: 1, stepTime: 0.2);
+
+    georgeUpAnimation =
+        spriteSheet.createAnimationByColumn(column: 2, stepTime: 0.2);
+
+    georgeRightAnimation =
+        spriteSheet.createAnimationByColumn(column: 3, stepTime: 0.2);
+
+    changeDirection();
 
     position = Vector2(centerX, centerY);
     size = Vector2(georgeSizeWidth, georgeSizeHeight);
@@ -70,7 +82,7 @@ class George extends SpriteAnimationComponent {
     Random random = Random();
     int newDirection = random.nextInt(4);
 
-    switch(newDirection) {
+    switch (newDirection) {
       case down:
         animation = georgeDownAnimation;
         break;
