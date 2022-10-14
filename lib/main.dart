@@ -83,5 +83,11 @@ class GoldRush extends FlameGame
 
     add(ScreenCollidable());
     add(hud);
+
+    camera.speed = 1;
+    camera.followComponent(
+      george,
+      worldBounds: const Rect.fromLTWH(0, 0, 1600, 1600),
+    );
   }
 }
