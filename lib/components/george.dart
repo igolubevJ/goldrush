@@ -45,6 +45,9 @@ class George extends Character {
     rightAnimation =
         spriteSheet.createAnimationByColumn(column: 3, stepTime: 0.2);
 
+    animation = downAnimation;
+    playing = false;
+
     addHitbox(HitboxRectangle());
   }
 }
