@@ -22,4 +22,25 @@ class RunButton extends HudButtonComponent {
         );
 
   bool buttonPressed = false;
+
+  @override
+  bool onTapDown(TapDownInfo info) {
+    super.onTapDown(info);
+    buttonPressed = true;
+    return true;
+  }
+
+  @override
+  bool onTapUp(TapUpInfo info) {
+    super.onTapUp(info);
+    buttonPressed = false;
+    return false;
+  }
+
+  @override
+  bool onTapCancel() {
+    super.onTapCancel();
+    buttonPressed = false;
+    return true;
+  }
 }
