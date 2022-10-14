@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
@@ -63,5 +64,27 @@ class George extends SpriteAnimationComponent {
 
     position = Vector2(centerX, centerY);
     size = Vector2(georgeSizeWidth, georgeSizeHeight);
+  }
+
+  void changeDirection() {
+    Random random = Random();
+    int newDirection = random.nextInt(4);
+
+    switch(newDirection) {
+      case down:
+        animation = georgeDownAnimation;
+        break;
+      case left:
+        animation = georgeLeftAnimation;
+        break;
+      case up:
+        animation = georgeUpAnimation;
+        break;
+      case right:
+        animation = georgeRightAnimation;
+        break;
+    }
+
+    currentDirection = newDirection;
   }
 }
