@@ -60,6 +60,11 @@ class George extends Character {
   }
 
   @override
+  void onCollisionEnd(Collidable other) {
+    hasCollided = false;
+  }
+
+  @override
   Future<void> onLoad() async {
     super.onLoad();
 
