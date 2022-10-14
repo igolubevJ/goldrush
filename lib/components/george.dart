@@ -3,6 +3,8 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/sprite.dart';
 import 'package:goldrush/components/character.dart';
+import 'package:goldrush/components/skeleton.dart';
+import 'package:goldrush/components/zombie.dart';
 
 class George extends Character {
   George({
@@ -10,6 +12,15 @@ class George extends Character {
     required Vector2 size,
     required double speed,
   }) : super(position: position, size: size, speed: speed);
+
+  @override
+  void onCollision(Set<Vector2> points, Collidable other) {
+    super.onCollision(points, other);
+
+    if (other is Zombie || other is Skeleton) {
+      other.removeFromParent();
+    }
+  }
 
   @override
   Future<void> onLoad() async {
