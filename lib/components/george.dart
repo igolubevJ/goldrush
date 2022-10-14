@@ -48,7 +48,7 @@ class George extends SpriteAnimationComponent {
       srcSize: Vector2(georgeSizeWidth, georgeSizeHeight),
     );
 
-    // sprite = spriteSheet.getSprite(0, 0);
+    animation = spriteSheet.createAnimationByColumn(column: 0, stepTime: 0.2);
 
     position = Vector2(centerX, centerY);
     size = Vector2(georgeSizeWidth, georgeSizeHeight);
