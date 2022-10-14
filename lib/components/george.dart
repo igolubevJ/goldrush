@@ -59,10 +59,50 @@ class George extends Character {
     addHitbox(HitboxRectangle());
   }
 
+  void stopAnimations() {
+    animation?.currentIndex = 0;
+    playing = false;
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
 
     speed = hud.runButton.buttonPressed ? runningSpeed : walkingSpeed;
+
+    if (!hud.joystick.delta.isZero()) {
+      position.add(hud.joystick.relativeDelta * speed * dt);
+      playing = true;
+
+      switch(hud.joystick.direction) {
+        case JoystickDirection.up:
+        case JoystickDirection.upRight:
+        case JoystickDirection.upLeft:
+          animation = upAnimation;
+          currentDirection = Character.up;
+          break;
+        case JoystickDirection.down:
+        case JoystickDirection.downRight:
+        case JoystickDirection.downLeft:
+          animation = downAnimation;
+          currentDirection = Character.down;
+          break;
+        case JoystickDirection.left:
+          animation = leftAnimation;
+          currentDirection = Character.left;
+          break;
+        case JoystickDirection.right:
+          animation = rightAnimation;
+          currentDirection = Character.right;
+          break;
+        case JoystickDirection.idle:
+          animation = null;
+          break;
+      }
+    } else {
+      if (playing) {
+        stopAnimations();
+      }
+    }
   }
 }
