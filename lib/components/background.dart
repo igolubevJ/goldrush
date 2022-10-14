@@ -19,4 +19,12 @@ class Background extends PositionComponent {
     position = Vector2(0, 0);
     size = Vector2(screenWidth, screenHeight);
   }
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+
+    canvas.drawRect(
+        Rect.fromPoints(position.toOffset(), size.toOffset()), backgroundPaint);
+  }
 }
