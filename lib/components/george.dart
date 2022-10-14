@@ -1,6 +1,7 @@
 import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
+import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:goldrush/components/character.dart';
 import 'package:goldrush/components/hud/hud.dart';
@@ -17,6 +18,14 @@ class George extends Character {
 
   final HudComponent hud;
   late double walkingSpeed, runningSpeed;
+
+  late Vector2 targetLocation;
+  bool movingToTouchedLocation = false;
+
+  void moveToLocation(TapUpInfo info) {
+    targetLocation = info.eventPosition.game;
+    movingToTouchedLocation = true;
+  }
 
   @override
   void onCollision(Set<Vector2> points, Collidable other) {
