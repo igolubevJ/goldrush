@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
+import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:goldrush/components/background.dart';
@@ -36,6 +37,8 @@ class GoldRush extends FlameGame
     );
 
     add(Background(george));
+    final tiledMap = await TiledComponent.load('tiles.tmx', Vector2.all(32));
+    add(tiledMap);
 
     add(george);
 
