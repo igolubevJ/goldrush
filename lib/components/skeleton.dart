@@ -1,5 +1,3 @@
-
-
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/geometry.dart';
@@ -11,7 +9,7 @@ class Skeleton extends EnemyCharacter {
     required Vector2 position,
     required Vector2 size,
     required double speed,
-  }): super(position: position, size: size, speed: speed);
+  }) : super(position: position, size: size, speed: speed);
 
   @override
   Future<void> onLoad() async {
@@ -34,6 +32,7 @@ class Skeleton extends EnemyCharacter {
 
     changeDirection();
 
-    addHitbox(HitboxRectangle());
+    addHitbox(HitboxRectangle(relation: Vector2(1.0, 0.7))
+      ..relativeOffset = Vector2(0.0, 0.3));
   }
 }

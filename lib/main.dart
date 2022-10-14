@@ -10,6 +10,7 @@ import 'package:goldrush/components/coin.dart';
 import 'package:goldrush/components/george.dart';
 import 'package:goldrush/components/hud/hud.dart';
 import 'package:goldrush/components/skeleton.dart';
+import 'package:goldrush/components/water.dart';
 import 'package:goldrush/components/zombie.dart';
 
 void main() async {
@@ -30,6 +31,8 @@ class GoldRush extends FlameGame
   @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    // debugMode = true;
 
     HudComponent hud = HudComponent();
     George george = George(
@@ -81,7 +84,15 @@ class GoldRush extends FlameGame
       ));
     }
 
-    // add(ScreenCollidable());
+    final water = tiledMap.tileMap.getObjectGroupFromLayer('Water');
+    water.objects.forEach((rect) {
+      add(Water(
+        position: Vector2(rect.x, rect.y),
+        size: Vector2(rect.width, rect.height),
+        id: rect.id,
+      ));
+    });
+
     add(hud);
 
     camera.speed = 1;

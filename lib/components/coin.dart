@@ -13,6 +13,8 @@ class Coin extends SpriteAnimationComponent with HasHitboxes, Collidable {
   Future<void> onLoad() async {
     super.onLoad();
 
+    collidableType = CollidableType.passive;
+
     var spriteImages = await Flame.images.load('coins.png');
 
     final spriteSheet = SpriteSheet(

@@ -7,6 +7,7 @@ import 'package:goldrush/components/character.dart';
 import 'package:goldrush/components/coin.dart';
 import 'package:goldrush/components/hud/hud.dart';
 import 'package:goldrush/components/skeleton.dart';
+import 'package:goldrush/components/water.dart';
 import 'package:goldrush/components/zombie.dart';
 import 'package:goldrush/utils/math_utils.dart';
 
@@ -23,6 +24,9 @@ class George extends Character {
 
   late Vector2 targetLocation;
   bool movingToTouchedLocation = false;
+
+  int collisionDirection = Character.down;
+  bool hasCollided = false;
 
   void moveToLocation(TapUpInfo info) {
     targetLocation = info.eventPosition.game;
@@ -42,6 +46,22 @@ class George extends Character {
       other.removeFromParent();
       hud.scoreText.setScore(20);
     }
+
+    if (other is Water) {
+      if (!hasCollided) {
+        if (movingToTouchedLocation) {
+          movingToTouchedLocation = false;
+        } else {
+          hasCollided = true;
+          collisionDirection = currentDirection;
+        }
+      }
+    }
+  }
+
+  @override
+  void onCollisionEnd(Collidable other) {
+    hasCollided = false;
   }
 
   @override
@@ -74,7 +94,8 @@ class George extends Character {
 
     anchor = Anchor.center;
 
-    addHitbox(HitboxRectangle());
+    addHitbox(HitboxRectangle(relation: Vector2(0.7, 0.7))
+      ..relativeOffset = Vector2(0.0, 0.1));
   }
 
   void stopAnimations() {
@@ -89,7 +110,8 @@ class George extends Character {
     speed = hud.runButton.buttonPressed ? runningSpeed : walkingSpeed;
 
     if (!hud.joystick.delta.isZero()) {
-      position.add(hud.joystick.relativeDelta * speed * dt);
+      // position.add(hud.joystick.relativeDelta * speed * dt);
+      movePlayer(dt);
       playing = true;
 
       switch (hud.joystick.direction) {
@@ -119,7 +141,8 @@ class George extends Character {
       }
     } else {
       if (movingToTouchedLocation) {
-        position += (targetLocation - position).normalized() * (speed * dt);
+        // position += (targetLocation - position).normalized() * (speed * dt);
+        movePlayer(dt);
 
         double threshold = 1.0;
 
@@ -153,6 +176,31 @@ class George extends Character {
       } else {
         if (playing) {
           stopAnimations();
+        }
+      }
+    }
+  }
+
+  void movePlayer(double delta) {
+    if (!(hasCollided && collisionDirection == currentDirection)) {
+      if (movingToTouchedLocation) {
+        position.add(
+            (targetLocation - position).normalized() * (speed * delta),
+        );
+      } else {
+        switch(currentDirection) {
+          case Character.left:
+            position.add(Vector2(delta * -speed, 0));
+            break;
+          case Character.right:
+            position.add(Vector2(delta * -speed, 0));
+            break;
+          case Character.up:
+            position.add(Vector2(0, delta * -speed));
+            break;
+          case Character.down:
+            position.add(Vector2(0, delta * speed));
+            break;
         }
       }
     }
