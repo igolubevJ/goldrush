@@ -13,6 +13,8 @@ class George extends Character {
     required double speed,
   }) : super(position: position, size: size, speed: speed);
 
+  late double walkingSpeed, runningSpeed;
+
   @override
   void onCollision(Set<Vector2> points, Collidable other) {
     super.onCollision(points, other);
@@ -25,6 +27,9 @@ class George extends Character {
   @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    walkingSpeed = speed;
+    runningSpeed = speed * 2;
 
     var spriteImages = await Flame.images.load('george.png');
 
