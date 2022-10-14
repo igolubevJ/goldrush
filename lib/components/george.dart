@@ -1,13 +1,47 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
-class George extends SpriteComponent {
+extension CreateAnimationByColumn on SpriteSheet {
+  SpriteAnimation createAnimationByColumn({
+    required int column,
+    required double stepTime,
+    bool loop = true,
+    int from = 0,
+    int? to,
+  }) {
+    to ??= columns;
+
+    final spriteList = List<int>.generate(to - from, (i) => from + i)
+        .map((e) => getSprite(e, column))
+        .toList();
+
+    return SpriteAnimation.spriteList(
+      spriteList,
+      stepTime: stepTime,
+      loop: loop,
+    );
+  }
+}
+
+class George extends SpriteAnimationComponent {
+  static const int down = 0, left = 1, up = 2, right = 3;
+
   late double screenWidth, screenHeight, centerX, centerY;
   late double georgeSizeWidth = 48.0;
   late double georgeSizeHeight = 48.0;
+
+  late SpriteAnimation georgeDownAnimation,
+      georgeLeftAnimation,
+      georgeRightAnimation,
+      georgeUpAnimation;
+
+  double elapsedTime = 0.0;
+  double georgeSpeed = 40.0;
+  int currentDirection = down;
 
   @override
   Future<void> onLoad() async {
@@ -26,9 +60,69 @@ class George extends SpriteComponent {
       srcSize: Vector2(georgeSizeWidth, georgeSizeHeight),
     );
 
-    sprite = spriteSheet.getSprite(0, 0);
-
     position = Vector2(centerX, centerY);
     size = Vector2(georgeSizeWidth, georgeSizeHeight);
+
+    georgeDownAnimation =
+        spriteSheet.createAnimationByColumn(column: 0, stepTime: 0.2);
+
+    georgeLeftAnimation =
+        spriteSheet.createAnimationByColumn(column: 1, stepTime: 0.2);
+
+    georgeUpAnimation =
+        spriteSheet.createAnimationByColumn(column: 2, stepTime: 0.2);
+
+    georgeRightAnimation =
+        spriteSheet.createAnimationByColumn(column: 3, stepTime: 0.2);
+
+    changeDirection();
+  }
+
+  void changeDirection() {
+    Random random = Random();
+    int newDirection = random.nextInt(4);
+
+    switch (newDirection) {
+      case down:
+        animation = georgeDownAnimation;
+        break;
+      case left:
+        animation = georgeLeftAnimation;
+        break;
+      case up:
+        animation = georgeUpAnimation;
+        break;
+      case right:
+        animation = georgeRightAnimation;
+        break;
+    }
+
+    currentDirection = newDirection;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    elapsedTime += dt;
+    if (elapsedTime > 3.0) {
+      changeDirection();
+      elapsedTime = 0;
+    }
+
+    switch (currentDirection) {
+      case down:
+        position.y += georgeSpeed * dt;
+        break;
+      case left:
+        position.x -= georgeSpeed * dt;
+        break;
+      case up:
+        position.y -= georgeSpeed * dt;
+        break;
+      case right:
+        position.x += georgeSpeed * dt;
+        break;
+    }
   }
 }
