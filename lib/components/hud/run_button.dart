@@ -20,4 +20,6 @@ class RunButton extends HudButtonComponent {
           anchor: anchor,
           onPressed: onPressed,
         );
+
+  bool buttonPressed = false;
 }
