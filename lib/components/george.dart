@@ -13,7 +13,7 @@ extension CreateAnimationByColumn on SpriteSheet {
     int from = 0,
     int? to,
   }) {
-    to ??= column;
+    to ??= columns;
 
     final spriteList = List<int>.generate(to - from, (i) => from + i)
         .map((e) => getSprite(e, column))
@@ -60,6 +60,9 @@ class George extends SpriteAnimationComponent {
       srcSize: Vector2(georgeSizeWidth, georgeSizeHeight),
     );
 
+    position = Vector2(centerX, centerY);
+    size = Vector2(georgeSizeWidth, georgeSizeHeight);
+
     georgeDownAnimation =
         spriteSheet.createAnimationByColumn(column: 0, stepTime: 0.2);
 
@@ -73,9 +76,6 @@ class George extends SpriteAnimationComponent {
         spriteSheet.createAnimationByColumn(column: 3, stepTime: 0.2);
 
     changeDirection();
-
-    position = Vector2(centerX, centerY);
-    size = Vector2(georgeSizeWidth, georgeSizeHeight);
   }
 
   void changeDirection() {
@@ -98,5 +98,31 @@ class George extends SpriteAnimationComponent {
     }
 
     currentDirection = newDirection;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    elapsedTime += dt;
+    if (elapsedTime > 3.0) {
+      changeDirection();
+      elapsedTime = 0;
+    }
+
+    switch (currentDirection) {
+      case down:
+        position.y += georgeSpeed * dt;
+        break;
+      case left:
+        position.x -= georgeSpeed * dt;
+        break;
+      case up:
+        position.y -= georgeSpeed * dt;
+        break;
+      case right:
+        position.x += georgeSpeed * dt;
+        break;
+    }
   }
 }
