@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
+import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:goldrush/components/background.dart';
+import 'package:goldrush/components/coin.dart';
 import 'package:goldrush/components/george.dart';
 import 'package:goldrush/components/hud/hud.dart';
 import 'package:goldrush/components/skeleton.dart';
@@ -36,20 +40,46 @@ class GoldRush extends FlameGame
     );
 
     add(Background(george));
+    final tiledMap = await TiledComponent.load('tiles.tmx', Vector2.all(32));
 
+    add(tiledMap);
     add(george);
 
-    add(Zombie(
-        position: Vector2(100, 200), size: Vector2(32.0, 64.0), speed: 20.0));
+    final enemies = tiledMap.tileMap.getObjectGroupFromLayer('Enemies');
 
-    add(Zombie(
-        position: Vector2(300, 200), size: Vector2(32.0, 64.0), speed: 20.0));
+    enemies.objects.asMap().forEach((index, position) {
+      if (index % 2 == 0) {
+        add(
+          Skeleton(
+            position: Vector2(position.x, position.y),
+            size: Vector2(32.0, 64.0),
+            speed: 60.0,
+          ),
+        );
+      } else {
+        add(
+          Zombie(
+            position: Vector2(position.x, position.y),
+            size: Vector2(32.0, 64.0),
+            speed: 20.0,
+          ),
+        );
+      }
+    });
 
-    add(Skeleton(
-        position: Vector2(100, 600), size: Vector2(32.0, 64.0), speed: 60.0));
+    Random random = Random(DateTime.now().millisecondsSinceEpoch);
+    for (int i = 0; i < 50; i++) {
+      int randomX = random.nextInt(48) + 1;
+      int randomY = random.nextInt(48) + 1;
 
-    add(Skeleton(
-        position: Vector2(300, 600), size: Vector2(32.0, 64.0), speed: 60.0));
+      double posCoinX = (randomX * 32) + 5;
+      double posCoinY = (randomY * 32) + 5;
+
+      add(Coin(
+        position: Vector2(posCoinX, posCoinY),
+        size: Vector2(20, 20),
+      ));
+    }
 
     add(ScreenCollidable());
     add(hud);

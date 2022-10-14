@@ -4,6 +4,7 @@ import 'package:flame/geometry.dart';
 import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:goldrush/components/character.dart';
+import 'package:goldrush/components/coin.dart';
 import 'package:goldrush/components/hud/hud.dart';
 import 'package:goldrush/components/skeleton.dart';
 import 'package:goldrush/components/zombie.dart';
@@ -35,6 +36,11 @@ class George extends Character {
     if (other is Zombie || other is Skeleton) {
       other.removeFromParent();
       hud.scoreText.setScore(10);
+    }
+
+    if (other is Coin) {
+      other.removeFromParent();
+      hud.scoreText.setScore(20);
     }
   }
 
