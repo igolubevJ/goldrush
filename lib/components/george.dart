@@ -74,7 +74,8 @@ class George extends Character {
 
     anchor = Anchor.center;
 
-    addHitbox(HitboxRectangle());
+    addHitbox(HitboxRectangle(relation: Vector2(0.7, 0.7))
+      ..relativeOffset = Vector2(0.0, 0.1));
   }
 
   void stopAnimations() {

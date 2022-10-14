@@ -32,7 +32,7 @@ class GoldRush extends FlameGame
   Future<void> onLoad() async {
     super.onLoad();
 
-    debugMode = true;
+    // debugMode = true;
 
     HudComponent hud = HudComponent();
     George george = George(
