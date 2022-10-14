@@ -24,6 +24,7 @@ class George extends Character {
 
     if (other is Zombie || other is Skeleton) {
       other.removeFromParent();
+      hud.scoreText.setScore(10);
     }
   }
 

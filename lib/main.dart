@@ -49,5 +49,6 @@ class GoldRush extends FlameGame
         position: Vector2(300, 600), size: Vector2(32.0, 64.0), speed: 60.0));
 
     add(ScreenCollidable());
+    add(hud);
   }
 }
