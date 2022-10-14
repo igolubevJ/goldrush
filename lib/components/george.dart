@@ -7,6 +7,7 @@ import 'package:goldrush/components/character.dart';
 import 'package:goldrush/components/coin.dart';
 import 'package:goldrush/components/hud/hud.dart';
 import 'package:goldrush/components/skeleton.dart';
+import 'package:goldrush/components/water.dart';
 import 'package:goldrush/components/zombie.dart';
 import 'package:goldrush/utils/math_utils.dart';
 
@@ -23,6 +24,9 @@ class George extends Character {
 
   late Vector2 targetLocation;
   bool movingToTouchedLocation = false;
+
+  int collisionDirection = Character.down;
+  bool hasCollided = false;
 
   void moveToLocation(TapUpInfo info) {
     targetLocation = info.eventPosition.game;
@@ -41,6 +45,17 @@ class George extends Character {
     if (other is Coin) {
       other.removeFromParent();
       hud.scoreText.setScore(20);
+    }
+
+    if (other is Water) {
+      if (!hasCollided) {
+        if (movingToTouchedLocation) {
+          movingToTouchedLocation = false;
+        } else {
+          hasCollided = true;
+          collisionDirection = currentDirection;
+        }
+      }
     }
   }
 
