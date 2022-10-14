@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:goldrush/components/background.dart';
 import 'package:goldrush/components/george.dart';
+import 'package:goldrush/components/zombie.dart';
 
 void main() async {
   // Create an instance of the game
@@ -23,8 +24,16 @@ class GoldRush extends FlameGame with HasCollidables {
   Future<void> onLoad() async {
     super.onLoad();
     add(Background());
+
     add(George(
         position: Vector2(200, 400), size: Vector2(48.0, 48.0), speed: 40.0));
+
+    add(Zombie(
+        position: Vector2(100, 200), size: Vector2(32.0, 64.0), speed: 20.0));
+
+    add(Zombie(
+        position: Vector2(300, 200), size: Vector2(32.0, 64.0), speed: 20.0));
+
     add(ScreenCollidable());
   }
 }
