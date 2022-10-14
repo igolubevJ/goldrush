@@ -4,7 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:goldrush/components/george.dart';
 
-class Background extends PositionComponent {
+class Background extends PositionComponent with Tappable {
   static final backgroundPaint = BasicPalette.white.paint();
 
   Background(this.george);
