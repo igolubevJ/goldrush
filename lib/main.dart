@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
+import 'package:flame/input.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
@@ -29,7 +30,11 @@ void main() async {
 }
 
 class GoldRush extends FlameGame
-    with HasCollidables, HasDraggables, HasTappables {
+    with
+        HasCollidables,
+        HasDraggables,
+        HasTappables,
+        HasKeyboardHandlerComponents {
   @override
   Future<void> onLoad() async {
     super.onLoad();
