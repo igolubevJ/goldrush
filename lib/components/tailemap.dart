@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:goldrush/utils/math_utils.dart';
 
 class TileMapComponent extends PositionComponent {
-  TileMapComponent(this.tiledComponent);
+  TileMapComponent(this.tiledComponent) {
+    add(tiledComponent);
+  }
+
   TiledComponent tiledComponent;
 
   @override
