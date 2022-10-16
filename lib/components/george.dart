@@ -3,6 +3,8 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:goldrush/components/character.dart';
 import 'package:goldrush/components/coin.dart';
 import 'package:goldrush/components/hud/hud.dart';
@@ -11,7 +13,7 @@ import 'package:goldrush/components/water.dart';
 import 'package:goldrush/components/zombie.dart';
 import 'package:goldrush/utils/math_utils.dart';
 
-class George extends Character {
+class George extends Character with KeyboardHandler {
   George({
     required this.hud,
     required Vector2 position,
@@ -30,9 +32,40 @@ class George extends Character {
   int collisionDirection = Character.down;
   bool hasCollided = false;
 
+  bool keyLeftPressed = false,
+      keyRightPressed = false,
+      keyUpPressed = false,
+      keyDownPressed = false,
+      keyRunningPressed = false;
+
   void moveToLocation(TapUpInfo info) {
     targetLocation = info.eventPosition.game;
     movingToTouchedLocation = true;
+  }
+
+  @override
+  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    if (event.data.keyLabel.toLowerCase().contains('a')) {
+      keyLeftPressed = (event is RawKeyDownEvent);
+    }
+
+    if (event.data.keyLabel.toLowerCase().contains('d')) {
+      keyRightPressed = (event is RawKeyDownEvent);
+    }
+
+    if (event.data.keyLabel.toLowerCase().contains('w')) {
+      keyUpPressed = (event is RawKeyDownEvent);
+    }
+
+    if (event.data.keyLabel.toLowerCase().contains('s')) {
+      keyDownPressed = (event is RawKeyDownEvent);
+    }
+
+    if (event.data.keyLabel.toLowerCase().contains('r')) {
+      keyRunningPressed = (event is RawKeyDownEvent);
+    }
+
+    return true;
   }
 
   @override
@@ -103,13 +136,23 @@ class George extends Character {
   void stopAnimations() {
     animation?.currentIndex = 0;
     playing = false;
+
+    keyLeftPressed = false;
+    keyUpPressed = false;
+    keyRightPressed = false;
+    keyDownPressed = false;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
 
-    speed = hud.runButton.buttonPressed ? runningSpeed : walkingSpeed;
+    speed = (hud.runButton.buttonPressed || keyRunningPressed)
+        ? runningSpeed
+        : walkingSpeed;
+
+    final bool isMovingByKeys =
+        keyLeftPressed || keyRightPressed || keyUpPressed || keyDownPressed;
 
     if (!hud.joystick.delta.isZero()) {
       // position.add(hud.joystick.relativeDelta * speed * dt);
@@ -140,6 +183,32 @@ class George extends Character {
         case JoystickDirection.idle:
           animation = null;
           break;
+      }
+    } else if (isMovingByKeys) {
+      movePlayer(dt);
+      playing = true;
+      movingToTouchedLocation = false;
+
+      if (keyUpPressed && (keyRightPressed || keyLeftPressed)) {
+        animation = upAnimation;
+        currentDirection = Character.up;
+      } else if (keyDownPressed && (keyLeftPressed || keyDownPressed)) {
+        animation = downAnimation;
+        currentDirection = Character.down;
+      } else if (keyLeftPressed) {
+        animation = leftAnimation;
+        currentDirection = Character.left;
+      } else if (keyRightPressed) {
+        animation = rightAnimation;
+        currentDirection = Character.right;
+      } else if (keyUpPressed) {
+        animation = upAnimation;
+        currentDirection = Character.up;
+      } else if (keyDownPressed) {
+        animation = downAnimation;
+        currentDirection = Character.down;
+      } else {
+        animation = null;
       }
     } else {
       if (movingToTouchedLocation) {
