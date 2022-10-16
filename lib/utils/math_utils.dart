@@ -1,7 +1,5 @@
-import 'dart:html';
 import 'dart:math';
-import 'dart:ui';
-import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 
 double getAngel(Vector2 origin, Vector2 target) {
   double dx = target.x - origin.x;
