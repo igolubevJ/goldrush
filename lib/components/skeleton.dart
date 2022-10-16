@@ -9,7 +9,9 @@ class Skeleton extends EnemyCharacter {
     required Vector2 position,
     required Vector2 size,
     required double speed,
-  }) : super(position: position, size: size, speed: speed);
+  }) : super(position: position, size: size, speed: speed) {
+    originalPosition = position;
+  }
 
   @override
   Future<void> onLoad() async {

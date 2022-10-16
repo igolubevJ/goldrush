@@ -17,7 +17,9 @@ class George extends Character {
     required Vector2 position,
     required Vector2 size,
     required double speed,
-  }) : super(position: position, size: size, speed: speed);
+  }) : super(position: position, size: size, speed: speed) {
+    originalPosition = position;
+  }
 
   final HudComponent hud;
   late double walkingSpeed, runningSpeed;
@@ -185,10 +187,10 @@ class George extends Character {
     if (!(hasCollided && collisionDirection == currentDirection)) {
       if (movingToTouchedLocation) {
         position.add(
-            (targetLocation - position).normalized() * (speed * delta),
+          (targetLocation - position).normalized() * (speed * delta),
         );
       } else {
-        switch(currentDirection) {
+        switch (currentDirection) {
           case Character.left:
             position.add(Vector2(delta * -speed, 0));
             break;
